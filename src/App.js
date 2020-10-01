@@ -49,10 +49,11 @@ function App() {
   // Si se pone una varible entre esos [] cada que cambie la variable, el useEffect se va a ejecutar
   // Si se deja vacío solo se ejecuta la primera vez
 
-  const addBody = (comment) => {
+  const addComment = (comment) => {
     console.log('el id', comment.id);
     console.log('Comentario a añadir recibido en APP', comment);
-    comment.id = comments.length + 1;
+    // comments.length + 1;
+    comment.id = comments[comments.length - 1].id + 1;
     const newComment = [...comments, comment];
     // setComments(newComment); //Sin usar la API
 
@@ -71,6 +72,16 @@ function App() {
       .then(setComments(newComment));
   };
 
+  const deleteComment = (id) => {
+    console.log('id', id);
+    fetch('https://jsonplaceholder.typicode.com/comments/' + id, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then((json) => console.log('delete comment', json))
+      .then(setComments(comments.filter((item) => item.id !== id)));
+  };
+
   return (
     <Router>
       <div className='App'>
@@ -83,11 +94,11 @@ function App() {
           path='/'
           render={(props) => (
             <React.Fragment>
-              <AddComment addBody={addBody} />
+              <AddComment addBody={addComment} />
 
               {/* // index es una prop, {comments} viene del state */}
 
-              <Comments comments={comments} />
+              <Comments comments={comments} delComment={deleteComment} />
             </React.Fragment>
           )}
         />
