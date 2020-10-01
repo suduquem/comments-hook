@@ -1,8 +1,10 @@
 import React from 'react';
 
-const CommentItem = ({ key, comment }) => {
+import './CommentItem.css';
+
+const CommentItem = ({ comment }) => {
   console.log('Lo que recibe CommentItem', comment);
-return <div>{comment.body}</div>
+  return <div className='item'>{comment.body}</div>;
 };
 
 export default CommentItem;
